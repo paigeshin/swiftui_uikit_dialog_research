@@ -32,7 +32,7 @@ class PresentingViewController: UIViewController, UIViewControllerTransitioningD
     var transitionStyle: PopupDialogTransitionStyle = .zoomIn
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        let presentationController = PresentationController(presentedViewController: presented, presenting: source)
+        let presentationController = PresentationController(presentedViewController: presented, presenting: presenting)
         return presentationController
     }
 
@@ -46,6 +46,7 @@ class PresentingViewController: UIViewController, UIViewControllerTransitioningD
             transition = BounceDownTransition(direction: .in)
         case .zoomIn:
             transition = ZoomTransition(direction: .in)
+            print("zoom in !")
         case .fadeIn:
             transition = FadeTransition(direction: .in)
         }
@@ -54,6 +55,7 @@ class PresentingViewController: UIViewController, UIViewControllerTransitioningD
     }
 
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        print("dismiss called!")
         var transition: TransitionAnimator
         switch transitionStyle {
         case .bounceUp:
@@ -62,6 +64,7 @@ class PresentingViewController: UIViewController, UIViewControllerTransitioningD
             transition = BounceDownTransition(direction: .out)
         case .zoomIn:
             transition = ZoomTransition(direction: .out)
+            print("zoom out !")
         case .fadeIn:
             transition = FadeTransition(direction: .out)
         }
@@ -85,11 +88,7 @@ struct DialogView: View {
     
     var body: some View {
         ZStack {
-            
             Text("hello world").foregroundColor(.white)
-                .onTapGesture {
-                    UIApplication.shared.topMostViewController?.dismiss(animated: true)
-                }
         }
         .frame(width: 200, height: 200)
         .background(Color.black)
