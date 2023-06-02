@@ -14,7 +14,7 @@ struct ContentView: View {
                 .imageScale(.large)
                 .foregroundColor(.accentColor)
             Button {
-                PresentingViewController().presentPopup()
+                DialogPresenter().presentPopup()
             } label: {
                 Text("show modal")
             }
@@ -27,7 +27,7 @@ struct ContentView: View {
 
 
 
-class PresentingViewController: UIViewController, UIViewControllerTransitioningDelegate {
+class DialogPresenter: NSObject, UIViewControllerTransitioningDelegate {
     
     var transitionStyle: PopupDialogTransitionStyle = .zoomIn
     
@@ -77,7 +77,7 @@ class PresentingViewController: UIViewController, UIViewControllerTransitioningD
         popupContentViewController.modalPresentationStyle = .custom
         popupContentViewController.transitioningDelegate = self
         popupContentViewController.view.backgroundColor = .clear
-        UIApplication.shared.present(popupContentViewController)
+        UIApplication.shared.topMostViewController?.present(popupContentViewController, animated: true)
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             popupContentViewController.dismiss(animated: true)
         }
